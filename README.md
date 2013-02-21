@@ -7,7 +7,7 @@ You will need to have `git` installed and [virtualbox with vagrant](http://docs.
 
 ### Run Live Blog
 
-    git clone git://github.com/petrjasek/superdesk-vagrant.git live-blog
+    git clone git://github.com/petrjasek/liveblog-vagrant.git live-blog
     cd live-blog
     vagrant up
 
