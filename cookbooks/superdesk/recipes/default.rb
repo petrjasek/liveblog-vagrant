@@ -38,6 +38,7 @@ end
 # service
 
 package "default-jre"
+package "mongodb"
 
 service "superdesk" do
     provider Chef::Provider::Service::Upstart
