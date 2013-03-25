@@ -66,8 +66,14 @@ Vagrant::Config.run do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.add_recipe "superdesk"
-    ## You may also specify custom JSON attributes:
-    ## chef.json = { :mysql_password => "foo" }
+
+    chef.json = {
+        :ally_branch => "devel",
+        :superdesk_branch => "devel",
+
+        :ally_repo => "git://github.com/sourcefabric/Ally-Py.git",
+        :superdesk_repo => "git://github.com/sourcefabric/Superdesk.git",
+    }
   end
 
   # Enable provisioning with chef server, specifying the chef server URL,

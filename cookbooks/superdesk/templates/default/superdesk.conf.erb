@@ -1,0 +1,9 @@
+
+description "Superdesk"
+
+start on startup
+stop on shutdown
+
+respawn
+
+exec python3 <%= @app %> 2>&1 >> /tmp/superdesk.log

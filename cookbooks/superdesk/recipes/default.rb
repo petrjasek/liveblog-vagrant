@@ -1,32 +1,62 @@
-execute "apt-get update" do
+e = execute "apt-get update" do
     action :nothing
-    not_if "which git && which python3 && which java"
 end
 
-package "git"
-package "python3"
-package "default-jre"
+e.run_action(:run)
 
-execute "git clone --depth=3 --branch #{node.ally.branch} #{node.ally.repo} /vagrant/ally-py" do
+# clone
+
+package "git"
+
+execute "git clone --branch #{node.ally_branch} #{node.ally_repo} ally-py" do
+    cwd "/vagrant/"
     creates "/vagrant/ally-py"
 end
 
-execute "git clone --depth=3 --branch #{node.superdesk.branch} #{node.superdesk.repo} /vagrant/ally-py/superdesk" do
+execute "git clone --branch #{node.superdesk_branch} #{node.superdesk_repo} superdesk" do
+    cwd "/vagrant/ally-py/"
     creates "/vagrant/ally-py/superdesk"
 end
 
-execute "build-eggs" do
-    command "./build-eggs"
-    cwd "/vagrant/ally-py/superdesk"
+# build
+
+package "python3"
+package "python3-setuptools"
+
+execute "/vagrant/ally-py/superdesk/build-eggs" do
+    cwd "/vagrant/ally-py/superdesk/"
 end
 
-app_path = "/vagrant/ally-py/superdesk/distribution/application.py"
+# setup
 
-execute "python3 #{app_path} -dump" do
-    cwd File.dirname(app_path)
+app = "/vagrant/ally-py/superdesk/distribution/application.py"
+
+execute "python3 #{app} -dump" do
+    cwd File.dirname(app)
 end
+
+# service
+
+package "default-jre"
 
 service "superdesk" do
-    action :start
-    start_command "python3 #{app_path} &"
+    provider Chef::Provider::Service::Upstart
+    supports :restart => true, :start => true, :stop => true
+end
+
+template "/etc/init/superdesk.conf" do
+    source "superdesk.conf.erb"
+    notifies :restart, "service[superdesk]"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+        :app => app,
+    })
+end
+
+# run
+
+service "superdesk" do
+    action [:enable, :start]
 end
