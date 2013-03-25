@@ -1,0 +1,10 @@
+
+description "Superdesk Web"
+
+start on startup
+stop on shutdown
+
+respawn
+
+env MONGOHQ_URL="<%= @db %>"
+exec python <%= @app %> runserver 0.0.0.0:8000 2>&1 >> /tmp/superdesk-web.log
