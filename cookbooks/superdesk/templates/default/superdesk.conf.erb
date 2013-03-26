@@ -6,4 +6,6 @@ stop on shutdown
 
 respawn
 
+env PYTHONPATH="<%= @pythonpath %>"
+
 exec python3 <%= @app %> 2>&1 >> /tmp/superdesk.log
