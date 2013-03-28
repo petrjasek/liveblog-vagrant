@@ -18,18 +18,18 @@ execute "git clone --branch #{node.ally_branch} #{node.ally_repo} ally-py" do
 end
 
 execute "git clone --branch #{node.superdesk_branch} #{node.superdesk_repo} superdesk" do
-    cwd "/vagrant/ally-py/"
-    creates "/vagrant/ally-py/superdesk"
+    cwd "/vagrant/"
+    creates "/vagrant/superdesk"
 end
 
 # setup
 
-setupfiles = File.join('/vagrant/ally-py/', '**', 'setup.py')
-plugins = Dir.glob(setupfiles)
-paths = plugins.map { |plugin| File.dirname(plugin) }
-pythonpath = '${PYTHONPATH}:' + (paths * ':')
+pattern = '/vagrant/{superdesk,ally-py}/**/setup.py'
+paths = Dir.glob(pattern)
+dirnames = paths.map { |path| File.dirname(path) }
+pythonpath = '${PYTHONPATH}:' + (dirnames * ':')
 
-app = "/vagrant/ally-py/superdesk/distribution/application.py"
+app = "/vagrant/superdesk/distribution/application.py"
 
 execute "python3 #{app} -dump" do
     cwd File.dirname(app)
