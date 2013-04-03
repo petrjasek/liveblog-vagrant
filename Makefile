@@ -1,3 +1,4 @@
 
 reinstall:
-	rm superdesk/distribution/workspace/shared/*.db
+	rm -rf superdesk/distribution/workspace
+	rm -f superdesk/distribution/*.properties
