@@ -1,5 +1,6 @@
 import os
 import glob
+import shutil
 
 from fabric.api import *
 from fabric.context_managers import shell_env
@@ -21,9 +22,14 @@ def run():
     with shell_env(PYTHONPATH=pythonpath):
         local('python3 %s' % runtime)
 
-def cleandb():
+def clean():
+    workspace = os.path.join(cwd, os.path.dirname(app), 'workspace')
+
     try:
-        db = os.path.join(cwd, os.path.dirname(app), 'workspace', 'shared', 'superdesk.db')
-        os.remove(db)
+        shutil.rmtree(workspace)
     except OSError:
         pass
+
+    properties = glob.glob(os.path.join(os.path.dirname(workspace), '*.properties'))
+    for propfile in properties:
+        os.remove(propfile)
