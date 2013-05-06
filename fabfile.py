@@ -20,3 +20,10 @@ def run():
     dump()
     with shell_env(PYTHONPATH=pythonpath):
         local('python3 %s' % runtime)
+
+def cleandb():
+    try:
+        db = os.path.join(cwd, os.path.dirname(app), 'workspace', 'shared', 'superdesk.db')
+        os.remove(db)
+    except OSError:
+        pass
