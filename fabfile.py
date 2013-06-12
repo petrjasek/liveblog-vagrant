@@ -29,3 +29,7 @@ def clean():
         shutil.rmtree(workspace)
     except OSError:
         pass
+
+    properties = glob.glob(os.path.join(os.path.dirname(workspace), '*.properties'))
+    for propfile in properties:
+        os.remove(propfile)
