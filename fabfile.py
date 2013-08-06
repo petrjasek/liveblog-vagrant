@@ -15,12 +15,12 @@ pythonpath = '${PYTHONPATH}:%s' % paths
 
 def dump():
     with shell_env(PYTHONPATH=pythonpath):
-        local('python3 %s -dump' % runtime)
+        local('python3.2 %s -dump' % runtime)
 
 def run():
     dump()
     with shell_env(PYTHONPATH=pythonpath):
-        local('python3 %s' % runtime)
+        local('python3.2 %s' % runtime)
 
 def clean():
     workspace = os.path.join(cwd, os.path.dirname(app), 'workspace')
