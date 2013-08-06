@@ -2,3 +2,4 @@
 /superdesk/
 /web/
 .vagrant
+*.pyc
