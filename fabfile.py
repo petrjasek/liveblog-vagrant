@@ -10,7 +10,7 @@ app = glob.glob(os.path.join('[Ss]uperdesk', 'distribution', 'application.py')).
 runtime = os.path.join(cwd, app)
 workspace = os.path.join(cwd, os.path.dirname(app), 'workspace')
 
-plugins = [os.path.dirname(x) for x in glob.glob(os.path.join(cwd, '*', '*', '*', 'setup.py'))]
+plugins = [os.path.dirname(x) for x in glob.glob(os.path.join(cwd, '*', '*', '*', 'setup.py')) if 'inter' not in x]
 paths = ':'.join(plugins)
 pythonpath = '${PYTHONPATH}:%s' % paths
 
@@ -36,7 +36,10 @@ def clean_properties():
     ]
 
     for propfile in properties:
-        os.remove(propfile)
+        try:
+            os.remove(propfile)
+        except OSError:
+            pass
 
 def clean():
     clean_workspace()
