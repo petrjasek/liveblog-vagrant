@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+            "path": "ally-py"
+		},
+        {
+            "follow_symlinks": true,
+            "path": "superdesk"
+        }
+	]
+}

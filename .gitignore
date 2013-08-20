@@ -3,3 +3,4 @@
 /web/
 .vagrant
 *.pyc
+*.sublime-workspace
